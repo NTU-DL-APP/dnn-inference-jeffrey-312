@@ -6,9 +6,12 @@ def relu(x):
     return np.maximum(0, x)  # 把負數變成0，正數保留
 
 def softmax(x):
-    # 為了避免爆炸，用最大值減去再指數
-    e_x = np.exp(x - np.max(x, axis=-1, keepdims=True))
-    return e_x / np.sum(e_x, axis=-1, keepdims=True)  # 機率總和為1
+    if x.ndim == 1:
+        e_x = np.exp(x - np.max(x))
+        return e_x / np.sum(e_x)
+    else:
+        e_x = np.exp(x - np.max(x, axis=1, keepdims=True))
+        return e_x / np.sum(e_x, axis=1, keepdims=True)
 
 # === Flatten ===
 def flatten(x):
